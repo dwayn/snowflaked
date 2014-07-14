@@ -9,7 +9,9 @@ else
 fi
 echo "Running aclocal"
 aclocal
-echo "Running automake"
-automake --gnu --add-missing
+echo "Running autoheader"
+autoheader
 echo "Running autoconf"
 autoconf
+echo "Running automake"
+automake --gnu --add-missing

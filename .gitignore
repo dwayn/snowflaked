@@ -4,6 +4,9 @@ Makefile
 aclocal.m4
 *.o
 autom4te.cache/*
+build-aux/*
+configure
+m4/*
 
 
 clients/php/Makefile.global
