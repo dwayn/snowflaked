@@ -21,3 +21,8 @@ Building:
 make
 
 
+#TODO
+Documentation
+Tests for snowflaked components
+Tests for php-snowflake
+Need to run through memory profiler
