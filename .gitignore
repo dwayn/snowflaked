@@ -7,7 +7,10 @@ autom4te.cache/*
 build-aux/*
 configure
 m4/*
-
+Makefile.in
+config.h.in
+src/Makefile.in
+tests/Makefile.in
 
 clients/php/Makefile.global
 clients/php/acinclude.m4
