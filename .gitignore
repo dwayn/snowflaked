@@ -50,3 +50,10 @@ clients/php/tests/basic.exp
 clients/php/tests/basic.log
 clients/php/tests/basic.out
 clients/php/tests/basic.php
+clients/php/.deps
+clients/php/.libs/
+clients/php/Makefile.fragments
+clients/php/Makefile.objects
+clients/php/modules/
+clients/php/php_snowflake.lo
+clients/php/snowflake.la
