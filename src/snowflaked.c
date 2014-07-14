@@ -68,8 +68,8 @@ void on_accept(int fd, short ev, void *arg) {
 }
 
 int main(int argc, char **argv) {
-    int region_id = 0;
-    int worker_id = 0;
+    int region_id = -1;
+    int worker_id = -1;
     int port = SERVER_PORT;
     timeout = 60;
     static int daemon_mode = 0;
@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
             {0, 0, 0, 0}
         };
         int option_index = 0;
-        c = getopt_long(argc, argv, "r:w:p:", long_options, &option_index);
+        c = getopt_long(argc, argv, "r:w:p:?", long_options, &option_index);
         if (c == -1) {
             break;
         }
@@ -107,14 +107,20 @@ int main(int argc, char **argv) {
                 port = atoi(optarg);
                 break;
             case '?':
+                printf("Usage: snowflaked -r REGIONID -w WORKERID [-p PORT(8008)] [--daemon]\n\n");
+                exit(0);
                 /* getopt_long already printed an error message. */
                 break;
             default:
                 abort();
         }
     }
-    if (daemon_mode == 1) {
-        daemonize();
+//    if (daemon_mode == 1) {
+//        daemonize();
+//    }
+    if (region_id < 0 || worker_id < 0) {
+        printf("Region ID and Worker ID must both be provided\n");
+        exit(1);
     }
 
     time(&app_stats.started_at);
@@ -169,36 +175,37 @@ int setnonblock(int fd) {
 }
 
 // this does not work quite correctly...need to dig into it more
-void daemonize() {
-    int i, lfp;
-    char str[10];
-    /* already a daemon */
-    if (getppid() == 1) {
-        return;
-    }
-    i = fork();
-    if (i < 0) { /* fork error */
-        exit(1);
-    }
-    if (i > 0) { /* parent exits */
-        exit(0);
-    }
-    setsid();
-    for (i = getdtablesize(); i >= 0; --i) { /* close all descriptors */
-        close(i);
-    }
-    i = open("/dev/null", O_RDWR);
-    dup(i);
-    dup(i);
-    umask(027);
-    chdir(RUNNING_DIR);
-    lfp = open(LOCK_FILE, O_RDWR | O_CREAT, 0640);
-    if (lfp < 0) {
-        exit(1);
-    }
-    if (lockf(lfp, F_TLOCK, 0) < 0) {
-        exit(0);
-    }
-    sprintf(str, "%d\n", getpid());
-    write(lfp, str, strlen(str));
-}
+
+//void daemonize() {
+//    int i, lfp;
+//    char str[10];
+//    /* already a daemon */
+//    if (getppid() == 1) {
+//        return;
+//    }
+//    i = fork();
+//    if (i < 0) { /* fork error */
+//        exit(1);
+//    }
+//    if (i > 0) { /* parent exits */
+//        exit(0);
+//    }
+//    setsid();
+//    for (i = getdtablesize(); i >= 0; --i) { /* close all descriptors */
+//        close(i);
+//    }
+//    i = open("/dev/null", O_RDWR);
+//    dup(i);
+//    dup(i);
+//    umask(027);
+//    chdir(RUNNING_DIR);
+//    lfp = open(LOCK_FILE, O_RDWR | O_CREAT, 0640);
+//    if (lfp < 0) {
+//        exit(1);
+//    }
+//    if (lockf(lfp, F_TLOCK, 0) < 0) {
+//        exit(0);
+//    }
+//    sprintf(str, "%d\n", getpid());
+//    write(lfp, str, strlen(str));
+//}

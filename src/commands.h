@@ -19,4 +19,4 @@ void reply(int fd, char *buffer);
 
 
 
-#endif __SNOWFLAKE_COMMANDS__
+#endif /* __SNOWFLAKE_COMMANDS__ */

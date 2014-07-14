@@ -36,7 +36,7 @@ void command_info(int fd, token_t *tokens) {
                 (int)(current_time - app_stats.started_at),
                 app_stats.version,
                 app_stats.region_id,
-                app_stats.worker_id
+                app_stats.worker_id,
                 app_stats.seq_cap,
                 app_stats.seq_max,
                 app_stats.ids,

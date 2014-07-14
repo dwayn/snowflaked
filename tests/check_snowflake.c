@@ -3,6 +3,7 @@
 #include <check.h>
 #include <assert.h>
 #include "../src/snowflake.h"
+#include "../src/stats.h"
 
 START_TEST(test_pools_empty) {
     int test = snowflake_init(0, 10);
