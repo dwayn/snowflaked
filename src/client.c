@@ -1,30 +1,8 @@
-#include <sys/types.h>
-#include <sys/time.h>
-#include <sys/stat.h>
-#include <sys/queue.h>
-#include <stdlib.h>
-#include <err.h>
-#include <string.h>
 #include <stdio.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <string.h> 
 #include <stdlib.h> 
-#include <stdio.h>
-
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <netdb.h>
-#include <string.h>
-
 #include <getopt.h>
-#include <signal.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <signal.h>
-#include <unistd.h>
 
 void send_command(int sd, char *command);
 
@@ -124,10 +102,6 @@ int main(int argc, char **argv) {
         perror("connect");
         exit(1);
     }
-
-    int item_id = 0;
-    int priority = 0;
-    char msg[32];
 
     switch (action) {
         case 1:

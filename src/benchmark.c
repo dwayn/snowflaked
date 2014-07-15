@@ -1,30 +1,9 @@
-#include <sys/types.h>
 #include <sys/time.h>
-#include <sys/stat.h>
-#include <sys/queue.h>
 #include <stdlib.h>
-#include <err.h>
-#include <string.h>
-#include <event.h>
-#include <evhttp.h>
-#include <stdio.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <pthread.h>
-
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <netdb.h>
 #include <string.h>
-
 #include <getopt.h>
-#include <signal.h>
 #include <stdio.h>
-#include <fcntl.h>
-#include <signal.h>
-#include <unistd.h>
 
 const int LOW = 1;
 const int HIGH = 500;

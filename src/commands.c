@@ -1,19 +1,5 @@
-#include <arpa/inet.h>
-#include <assert.h>
-#include <err.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <getopt.h>
-#include <netinet/in.h>
-#include <signal.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <time.h>
 #include <unistd.h>
 
 #include "commands.h"

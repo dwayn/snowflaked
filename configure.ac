@@ -24,7 +24,7 @@ AM_PROG_CC_C_O
 
 # Checks for libraries.
 
-AC_CHECK_LIB([m], [cos])
+# AC_CHECK_LIB([m], [cos])
 # pthread should not be needed now
 # AC_CHECK_LIB([pthread], [pthread_create]) 
 

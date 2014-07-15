@@ -2,8 +2,6 @@
 #include "snowflake.h"
 #include <sys/time.h>
 #include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
 
 long int snowflake_id() {
     struct timeval tp;
