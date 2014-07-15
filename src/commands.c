@@ -18,7 +18,7 @@ void command_info(int fd, token_t *tokens) {
 	char out[200];
 	time_t current_time;
 	time(&current_time);
-        sprintf(out, "Uptime:%d\nVersion:%s\nRegion:%d\nWorker:%d\nSeq_cap:%ld\nSeq_max:%ld\nIDs:%ld\nWaits:%ld\r\n",
+        sprintf(out, "+uptime:%d\rversion:%s\rregion:%d\rworker:%d\rseq_cap:%ld\rseq_max:%ld\rids:%ld\rwaits:%ld\r\n",
                 (int)(current_time - app_stats.started_at),
                 app_stats.version,
                 app_stats.region_id,

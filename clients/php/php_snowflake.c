@@ -499,8 +499,8 @@ PHPAPI void snowflake_1_response(INTERNAL_FUNCTION_PARAMETERS, SnowflakeSock *sn
 PHP_METHOD(Snowflake, get) {
 	zval *object;
 	SnowflakeSock *snowflake_sock;
-	char *key = NULL, *cmd, *response;
-	int key_len, cmd_len, response_len;
+	char *val = NULL, *cmd, *response, *cur, *pos;
+	int cmd_len, response_len;
 
 	if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC, getThis(), "O", &object, snowflake_ce) == FAILURE) {
 		RETURN_FALSE;
@@ -518,9 +518,20 @@ PHP_METHOD(Snowflake, get) {
 	efree(cmd);
 
 	if ((response = snowflake_sock_read(snowflake_sock, &response_len TSRMLS_CC)) == NULL) {
-		RETURN_FALSE;
+            zend_throw_exception(snowflake_exception_ce, "Error getting ID", 1000 TSRMLS_CC);
+            RETURN_FALSE;
 	}
-	RETURN_STRINGL(response, response_len, 0);
+        
+        cur = response;
+        if (cur[0] == '+') {
+            cur += 1;
+            pos = cur + response_len - 1;
+            val = emalloc(pos - cur + 1);
+            memcpy(val, cur, pos-cur);
+            val[pos-cur] = 0;
+            RETURN_STRING(val, 0);
+        }
+	
 }
 
 PHP_METHOD(Snowflake, info) {
@@ -548,12 +559,14 @@ PHP_METHOD(Snowflake, info) {
 	}
 
 	if ((response = snowflake_sock_read(snowflake_sock, &response_len TSRMLS_CC)) == NULL) {
-		RETURN_FALSE;
+            zend_throw_exception(snowflake_exception_ce, "Error getting server info", 1000 TSRMLS_CC);
+            RETURN_FALSE;
 	}
 
 	array_init(return_value);
 
 	cur = response;
+        cur += 1; // get past the first reply type byte
 	while(1) {
 		/* key */
 		pos = strchr(cur, ':');
@@ -573,7 +586,7 @@ PHP_METHOD(Snowflake, info) {
 		value = emalloc(pos - cur + 1);
 		memcpy(value, cur, pos-cur);
 		value[pos-cur] = 0;
-		pos += 2; /* \r, \n */
+		pos += 1; /* \r, \n */
 		cur = pos;
 
 		is_numeric = 1;

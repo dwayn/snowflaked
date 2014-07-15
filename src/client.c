@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
     }
 
     if (action == 0) {
-        printf("Invalid command given, should be either update, next, peek or info.\n");
+        printf("Invalid command given, should be either get or info.\n");
         printf("usage: client [--ip=] [--port=] <command> [... command arguments]\n");
         exit(1);
     }
@@ -145,6 +145,10 @@ void send_command(int sd, char *command) {
             if (buf_len >= 2) {
                 resp = malloc(1 + buf_len);
                 memcpy(resp, buf + 1, buf_len);
+                // rewrite those pesky \r's with \n's so we can read them
+                for (int i = 0; i < buf_len; i++)
+                    if (resp[i] == '\r')
+                        resp[i] = '\n';
                 printf("%s\n", resp);
                 free(resp);
             } else {
