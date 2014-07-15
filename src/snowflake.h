@@ -1,7 +1,7 @@
 #ifndef __SNOWFLAKE__
 #define __SNOWFLAKE__
 
-
+// the timestamp in milliseconds of the start of the custom epoch
 #define SNOWFLAKE_EPOCH 1388534400000 //Midnight Januarly 1, 2014
 
 #define SNOWFLAKE_TIME_BITS 41

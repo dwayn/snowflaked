@@ -29,25 +29,6 @@ void command_info(int fd, token_t *tokens) {
                 app_stats.waits
                 );
         reply(fd, out);
-        
-        /* testing rolling up into one reply call so that only one network packet is sent back
-	sprintf(out, "Uptime: %d\n", (int)(current_time - app_stats.started_at)); 
-        reply(fd, out);
-	sprintf(out, "Version: %s\n", app_stats.version); 
-        reply(fd, out);
-	sprintf(out, "Region: %d\n", app_stats.region_id); 
-        reply(fd, out);
-	sprintf(out, "Worker: %d\n", app_stats.worker_id); 
-        reply(fd, out);
-	sprintf(out, "Seq_cap: %ld\n", app_stats.seq_cap); 
-        reply(fd, out);
-	sprintf(out, "Seq_max: %ld\n", app_stats.seq_max); 
-        reply(fd, out);
-	sprintf(out, "IDs: %ld\n", app_stats.ids); 
-        reply(fd, out);
-	sprintf(out, "Waits: %ld\r\n", app_stats.waits); 
-        reply(fd, out);
-        */
 }
 
 // TODO: Clean the '\r\n' scrub code.

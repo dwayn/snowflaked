@@ -8,34 +8,24 @@
 void send_command(int sd, char *command);
 
 int main(int argc, char **argv) {
-    char *ipaddress = "127.0.0.1";
+    char *host = "localhost";
     int port = 8008;
 
     int c;
     while (1) {
         static struct option long_options[] = {
-            {"ip", required_argument, 0, 'i'},
+            {"host", required_argument, 0, 'h'},
             {"port", required_argument, 0, 'p'},
             {0, 0, 0, 0}
         };
         int option_index = 0;
-        c = getopt_long(argc, argv, "i:p:", long_options, &option_index);
+        c = getopt_long(argc, argv, "h:p:", long_options, &option_index);
         if (c == -1) {
             break;
         }
         switch (c) {
-            case 0:
-                if (long_options[option_index].flag != 0) {
-                    break;
-                }
-                printf("option %s", long_options[option_index].name);
-                if (optarg) {
-                    printf(" with arg %s", optarg);
-                }
-                printf("\n");
-                break;
-            case 'i':
-                ipaddress = optarg;
+            case 'h':
+                host = optarg;
                 break;
             case 'p':
                 port = atoi(optarg);
@@ -52,14 +42,14 @@ int main(int argc, char **argv) {
 
     if (argc - optind == 0) {
         printf("Command not provided.\n");
-        printf("usage: client [--ip=] [--port=] <command> [... command arguments]\n");
+        printf("usage: client [--host=] [--port=] <command> [... command arguments]\n");
         exit(1);
     }
 
     if (strcmp(argv[optind], "get") == 0) {
         if (argc - optind != 1) {
             printf("The 'get' command requires 0 command parameters.\n");
-            printf("usage: client [--ip=] [--port=] next\n");
+            printf("usage: client [--host=] [--port=] next\n");
             exit(1);
         }
         action = 1;
@@ -68,7 +58,7 @@ int main(int argc, char **argv) {
     if (strcmp(argv[optind], "info") == 0) {
         if (argc - optind != 1) {
             printf("The 'info' command requires 0 command parameters.\n");
-            printf("usage: client [--ip=] [--port=] info\n");
+            printf("usage: client [--host=] [--port=] info\n");
             exit(1);
         }
         action = 2;
@@ -76,7 +66,7 @@ int main(int argc, char **argv) {
 
     if (action == 0) {
         printf("Invalid command given, should be either get or info.\n");
-        printf("usage: client [--ip=] [--port=] <command> [... command arguments]\n");
+        printf("usage: client [--host=] [--port=] <command> [... command arguments]\n");
         exit(1);
     }
 
@@ -84,7 +74,7 @@ int main(int argc, char **argv) {
     struct sockaddr_in pin;
     int sd;
 
-    if ((hp = gethostbyname(ipaddress)) == 0) {
+    if ((hp = gethostbyname(host)) == 0) {
         perror("gethostbyname");
         exit(1);
     }
@@ -141,15 +131,20 @@ void send_command(int sd, char *command) {
             break;
         case '+':
         case ':':
-            buf_len = strlen(buf) - 3;
+            buf_len = strlen(buf);
             if (buf_len >= 2) {
-                resp = malloc(1 + buf_len);
-                memcpy(resp, buf + 1, buf_len);
-                // rewrite those pesky \r's with \n's so we can read them
-                for (int i = 0; i < buf_len; i++)
+                resp = malloc(buf_len);
+                memcpy(resp, buf + 1, buf_len - 1);
+                resp[buf_len] = '\0';
+                // rewrite those pesky \r's with \n's so we can read them,
+                // and terminate the string at the original \n
+                for (int i = 0; i < buf_len; i++) {
+                    if (resp[i] == '\n')
+                        resp[i] = '\0';
                     if (resp[i] == '\r')
                         resp[i] = '\n';
-                printf("%s\n", resp);
+                }
+                printf("%s", resp);
                 free(resp);
             } else {
                 printf("protocol error \n");

@@ -12,7 +12,7 @@ const int HIGH = 500;
 void send_command(int sd, char *command, int iteration, int modval);
 
 int main(int argc, char **argv) {
-    char *ipaddress = "127.0.0.1";
+    char *host = "localhost";
     int port = 8008;
     int iterations = 1000;
     int modval = 1;
@@ -20,29 +20,19 @@ int main(int argc, char **argv) {
     int c;
     while (1) {
         static struct option long_options[] = {
-            {"ip", required_argument, 0, 'i'},
+            {"host", required_argument, 0, 'h'},
             {"port", required_argument, 0, 'p'},
             {"iterations", required_argument, 0, 'n'},
             {0, 0, 0, 0}
         };
         int option_index = 0;
-        c = getopt_long(argc, argv, "i:p:n:m:", long_options, &option_index);
+        c = getopt_long(argc, argv, "h:p:n:m:", long_options, &option_index);
         if (c == -1) {
             break;
         }
         switch (c) {
-            case 0:
-                if (long_options[option_index].flag != 0) {
-                    break;
-                }
-                printf("option %s", long_options[option_index].name);
-                if (optarg) {
-                    printf(" with arg %s", optarg);
-                }
-                printf("\n");
-                break;
-            case 'i':
-                ipaddress = optarg;
+            case 'h':
+                host = optarg;
                 break;
             case 'p':
                 port = atoi(optarg);
@@ -65,7 +55,7 @@ int main(int argc, char **argv) {
     struct sockaddr_in pin;
     int sd;
 
-    if ((hp = gethostbyname(ipaddress)) == 0) {
+    if ((hp = gethostbyname(host)) == 0) {
         perror("gethostbyname");
         exit(1);
     }

@@ -9,7 +9,7 @@ long int snowflake_id() {
     long int millisecs = tp.tv_sec * 1000 + tp.tv_usec / 1000 - SNOWFLAKE_EPOCH;
     long int id = 0L;
 
-    // Catch NTP clock adjustment that rolls time backwards or the sequence number has overflowed
+    // Catch NTP clock adjustment that rolls time backwards and sequence number overflow
     if ((snowflake_global_state.seq > snowflake_global_state.seq_max ) || snowflake_global_state.time > millisecs) {
         ++app_stats.waits;
         while (snowflake_global_state.time >= millisecs) {

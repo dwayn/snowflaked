@@ -23,7 +23,5 @@ This extension exposes one class, 'Snowflake'.
     $stats = $sf->info();
 
 
-#TODO
+### TODO
 Real class docs
-Clean up responses to strip the "+"
-Catch error response and raise exception from the extension
