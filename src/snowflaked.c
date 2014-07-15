@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <event.h>
+#include <unistd.h>
 
 #include "snowflake.h"
 #include "snowflaked.h"

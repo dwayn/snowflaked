@@ -1,9 +1,10 @@
-#include <sys/time.h>
 #include <stdlib.h>
 #include <netdb.h>
 #include <string.h>
 #include <getopt.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <time.h>
 
 const int LOW = 1;
 const int HIGH = 500;
@@ -89,13 +90,6 @@ int main(int argc, char **argv) {
     srand((unsigned int) seconds);
 
     int n = 0;
-    int list[1000];
-    while (n < 1000) {
-        list[n] = rand() % (HIGH - LOW + 1) + LOW;
-        n++;
-    }
-
-    n = 0;
     char msg[10];
     sprintf(msg, "GET\r\n");
     while (n < iterations) {
