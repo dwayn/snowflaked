@@ -3,12 +3,13 @@
 #include <stdlib.h> 
 #include <netdb.h>
 #include <getopt.h>
+#include <unistd.h>
 
 void send_command(int sd, char *command);
 
 int main(int argc, char **argv) {
     char *ipaddress = "127.0.0.1";
-    int port = 8002;
+    int port = 8008;
 
     int c;
     while (1) {
