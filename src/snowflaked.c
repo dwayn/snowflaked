@@ -11,8 +11,6 @@
 #include "stats.h"
 #include "commands.h"
 
-volatile sig_atomic_t respond_empty = 0;
-
 void on_read(int fd, short ev, void *arg) {
     struct client *client = (struct client *) arg;
     char buf[64];
@@ -27,10 +25,6 @@ void on_read(int fd, short ev, void *arg) {
         close(fd);
         event_del(&client->ev_read);
         free(client);
-        return;
-    }
-    if (respond_empty == 1) {
-        reply(fd, "-1\r\n");
         return;
     }
     process_request(fd, buf);
