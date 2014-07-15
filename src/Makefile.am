@@ -18,6 +18,6 @@ endif
 noinst_PROGRAMS		    = $(debugprog)
 snowflaked_debug_SOURCES    = snowflaked.c snowflaked.h stats.h commands.c commands.h snowflake.c snowflake.h
 snowflaked_debug_CFLAGS	    = -Wall -pg
-snowflaked_debug_LDFLAGS    = -pg -lprofiler
+snowflaked_debug_LDFLAGS    = -pg -lprofiler -ltcmalloc
 
 
