@@ -155,5 +155,57 @@ _you can leave out gperftools if you are not planning on compiling the debug ver
 * make
 * sudo make install
 
-#TODO
+
+
+
+
+# Protocol
+The daemon implements a simple text protocol:
+
+
+#### Get ID request:
+
+        Get\r\n
+
+##### Server ID response: 
+64bit integer preceeded by "+"
+
+        +70955254678034981\r\n
+        
+##### Server error response:
+If there is an error, the response will be preceeded by "-"
+
+        -ERROR error message\r\n
+
+#### Get server stats:
+
+        INFO\r\n
+
+##### Server info response
+
+        uptime:16761\r
+        version:00.02.00\r
+        region:0\r
+        worker:39\r
+        seq_cap:255\r
+        seq_max:84\r
+        ids:334241\r
+        waits:0\r\n
+
+* uptime - Seconds since server started
+* version - Compiled version of the server
+* region - Region ID for the server
+* worker - Worker ID for the server
+* seq_cap - Max sequence ID that can be generated
+* seq_max - The highest sequence number that the server has generated since it was started
+* ids - The number of IDs that the server has generated since it was started
+* waits - The number of times the server has had to enter a wait loop to generate an ID
+ * This can be caused by hitting the sequence number cap or by waiting due to an NTP clock adjustment that rolled time backwards on the host
+
+
+
+
+
+
+### TODO
 * Tests for snowflaked components
