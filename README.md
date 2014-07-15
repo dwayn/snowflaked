@@ -85,6 +85,7 @@ Optional Arguments
 
 
 #### `sfbench`
+Command line client for generating load on snowflaked daemon
 
         -h HOST, --host HOST
                             Hostname of the server to query
