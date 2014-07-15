@@ -44,10 +44,14 @@ adjusted in `src/snowflake.h` by modifying the `SNOWFLAKE_*` constants and the p
 Be sure that the sum of the 4 `*_BITS` constants does not exceed 63 bits as that will cause overflow 
 on the ID.
 
+### Limits
+The theoretical limit to the algorithm is approximately 2^4 * 2^10 * 2^8 * 1000 or ~4.2B IDs per second 
+by 2^4 * 2^10 worker processes. Due to the single threaded nature of the daemon, CPU clock speed is the 
+primary limiter to the rate at which IDs can be generated. On a 2.8ghz Intel Core i7, I have benchmarked
+to about 130k IDs per second which is why I chose 8 bits for the sequence (would take approx 5ghz CPU to 
+overrun the sequence). Unfortunately, I have been unable to squeeze anymore performance out of the daemon 
+due to the fact that the majority of the CPU is spent in libevent library handling the connections.
 
-
-Included in this project is the server (snowflaked), command line client (snowflake) and a 
-simple C load generation program (sfbench)
  
 # Components
 
@@ -166,7 +170,7 @@ The daemon implements a simple text protocol:
 
 #### Get ID request:
 
-        Get\r\n
+        GET\r\n
 
 ##### Server ID response: 
 64bit integer preceeded by "+"
@@ -183,8 +187,10 @@ If there is an error, the response will be preceeded by "-"
         INFO\r\n
 
 ##### Server info response
+The following is actually a contiguous string, but it is broken up into multiple lines for 
+the sake of readability.
 
-        uptime:16761\r
+        +uptime:16761\r
         version:00.02.00\r
         region:0\r
         worker:39\r
