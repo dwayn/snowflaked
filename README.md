@@ -23,6 +23,7 @@ when NTP adjusts the system clock backwards. ___Note: NTP should be configured a
 Parts of a snowflake ID:
 
 * sign bit: will always be 0
+ * this is because some languages don't support unsigned integers properly (Java and PHP are notable cases)
 * next 41 bits: milliseconds since custom epoch
 * next 4 bits: region id
 * next 10 bits: worker id

@@ -50,6 +50,11 @@ void on_read(int fd, short ev, void *arg) {
         free(client);
         return;
     }
+    // ensure that the string is properly null terminated and that the buffer is not overflowed
+    if(len >= sizeof(buf))
+        len = sizeof(buf) - 1;
+    buf[len] = '\0';
+    
     process_request(fd, buf);
 }
 
@@ -116,7 +121,6 @@ int main(int argc, char **argv) {
             case '?':
                 printf("Usage: snowflaked -r REGIONID -w WORKERID [-p PORT(8008)] [--daemon]\n\n");
                 exit(0);
-                /* getopt_long already printed an error message. */
                 break;
             default:
                 abort();

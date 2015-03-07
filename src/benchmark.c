@@ -45,10 +45,11 @@ int main(int argc, char **argv) {
             {"host", required_argument, 0, 'h'},
             {"port", required_argument, 0, 'p'},
             {"iterations", required_argument, 0, 'n'},
+            {"output-every", required_argument, 0, 'n'},
             {0, 0, 0, 0}
         };
         int option_index = 0;
-        c = getopt_long(argc, argv, "h:p:n:m:", long_options, &option_index);
+        c = getopt_long(argc, argv, "h:p:n:m:?", long_options, &option_index);
         if (c == -1) {
             break;
         }
@@ -61,12 +62,19 @@ int main(int argc, char **argv) {
                 break;
             case 'n':
                 iterations = atoi(optarg);
+                if (iterations <= 0) {
+                    printf("iterations value must be greater than 0");
+                }
                 break;
             case 'm':
                 modval = atoi(optarg);
+                if (modval <= 0) {
+                    printf("modulus value must be greater than 0");
+                }
                 break;
             case '?':
-                /* getopt_long already printed an error message. */
+                printf("usage: sfbench [--host/-h=HOST] [--port/-p=PORT] [--iterations/-n=ITERATIONS] [--output-every/-m=MODULO_VALUE] \n");
+                exit(1);
                 break;
             default:
                 abort();
@@ -110,7 +118,7 @@ int main(int argc, char **argv) {
         send_command(sd, msg, n, modval);
         n++;
     }
-    send_command(sd, "INFO\r\n", 0, 1);
+    send_command(sd, "INFO\r\n", 0, 0);
 
     close(sd);
 
@@ -129,6 +137,16 @@ void send_command(int sd, char *command, int iteration, int modval) {
         exit(1);
     }
     buf[numbytes] = '\0';
-    if (iteration % modval == 0)
+    // special output case for the info call
+    if (modval == 0)
+    {
+        for (int i = 0; i < numbytes; i++)
+        {
+            if (buf[i] == '\r')
+                buf[i] = '\n';
+        }
+        printf("INFO:\n%s", buf);
+    }
+    else if (iteration % modval == 0)
         printf("Receive: %s", buf);
 }

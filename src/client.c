@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
             {0, 0, 0, 0}
         };
         int option_index = 0;
-        c = getopt_long(argc, argv, "h:p:", long_options, &option_index);
+        c = getopt_long(argc, argv, "h:p:?", long_options, &option_index);
         if (c == -1) {
             break;
         }
@@ -53,7 +53,8 @@ int main(int argc, char **argv) {
                 port = atoi(optarg);
                 break;
             case '?':
-                /* getopt_long already printed an error message. */
+                printf("usage: snowflake [--host=] [--port=] <command> [... command arguments]\n");
+                exit(1);
                 break;
             default:
                 abort();
@@ -64,14 +65,14 @@ int main(int argc, char **argv) {
 
     if (argc - optind == 0) {
         printf("Command not provided.\n");
-        printf("usage: client [--host=] [--port=] <command> [... command arguments]\n");
+        printf("usage: snowflake [--host=] [--port=] <command> [... command arguments]\n");
         exit(1);
     }
 
     if (strcmp(argv[optind], "get") == 0) {
         if (argc - optind != 1) {
             printf("The 'get' command requires 0 command parameters.\n");
-            printf("usage: client [--host=] [--port=] next\n");
+            printf("usage: snowflake [--host=] [--port=] next\n");
             exit(1);
         }
         action = 1;
@@ -80,7 +81,7 @@ int main(int argc, char **argv) {
     if (strcmp(argv[optind], "info") == 0) {
         if (argc - optind != 1) {
             printf("The 'info' command requires 0 command parameters.\n");
-            printf("usage: client [--host=] [--port=] info\n");
+            printf("usage: snowflake [--host=] [--port=] info\n");
             exit(1);
         }
         action = 2;
@@ -88,7 +89,7 @@ int main(int argc, char **argv) {
 
     if (action == 0) {
         printf("Invalid command given, should be either get or info.\n");
-        printf("usage: client [--host=] [--port=] <command> [... command arguments]\n");
+        printf("usage: snowflake [--host=] [--port=] <command> [... command arguments]\n");
         exit(1);
     }
 
