@@ -104,7 +104,8 @@ Command line client for generating load on snowflaked daemon
                             Number of ID GET calls to make to the server
                             Default: 1000
 
-        -m MODVALUE         Modulus value to set how often to write to stdout
+        -m MODVALUE, --output-every MODVALUE
+                            Modulus value to set how often to write to stdout
                             Default: 1 (write line to stdout for every GET call)
 
 
