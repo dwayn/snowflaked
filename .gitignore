@@ -27,6 +27,8 @@ src/snowflake
 tests/.deps/
 tests/check_snowflake
 
+clients/php/vendor/
+clients/php/composer.lock
 
 clients/php-extension/Makefile.global
 clients/php-extension/acinclude.m4

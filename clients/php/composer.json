@@ -1,0 +1,20 @@
+{
+	"name": "dwayn/snowflaked",
+    "authors": [
+        {
+            "name": "Mario Döring",
+            "email": "mario@clancats.com"
+        }
+    ],
+	"description": "Snowflake PHP client.",
+	"license": "MIT",
+	"require": {
+		"php": ">=7.0"
+	},
+	"autoload": {
+        "psr-4": {
+        	"Snowflake\\": "src/"
+        }
+    }
+}
+
