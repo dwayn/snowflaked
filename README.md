@@ -111,7 +111,7 @@ Command line client for generating load on snowflaked daemon
 
 ### Clients
 #### PHP
-There is an extension for PHP in `clients/php` that can be compiled. See [clients/php/README.md](clients/php/README.md)
+There is an extension for PHP in `clients/php-extension` that can be compiled. See [clients/php-extension/README.md](clients/php-extension/README.md)
 
 #### Python
 _Coming soon_
